@@ -231,7 +231,6 @@ void Catalogue::Tri(string fichier, string depart, string arrivee)
 		}
 	}
 	this->Sauvegarder(fichier,resultat);
-	
 }
 
 void Catalogue::Tri(string fichier, int borneinf, int borneMax)
