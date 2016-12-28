@@ -151,7 +151,7 @@ void Catalogue::RechercheComplexe(char * depart, char * arrivee) const
 
 
 bool Catalogue::villeVisitee(const char * ville, char **tableau) const
-// Parcours du tableau des villes parcourues. Si au moins une d'entre elle est identique à la ville testée, renvoie true
+// Parcours du tableau des villes parcourues. Si au moins une d'entre elle est identique à la ville testee, renvoie true
 {
 	for (unsigned int i = 0 ; i<strlen(*tableau) ;i++) {
 		if(strcmp(tableau[i], ville) == 0)
@@ -207,7 +207,7 @@ void Catalogue::Tri(string fichier,string ville,bool typeVille){
 		}
 	}
 	else{
-		// La ville est l'arrivée
+		// La ville est l'arrivee
 		for(int i = 0 ; i < nbAct ; i++)
 		{
 			if(ville.compare(tableau[i]->GetArrivee())==0){
@@ -220,12 +220,30 @@ void Catalogue::Tri(string fichier,string ville,bool typeVille){
 
 void Catalogue::Tri(string fichier, string depart, string arrivee)
 {
+	Trajet** tableau=this->trajetsCatalogue.GetTrajets();
+	int nbAct=this->trajetsCatalogue.GetNbAct();
+	ListeTrajets resultat;
+	for(int i = 0 ; i < nbAct ; i++)
+	{
+		if((depart.compare(tableau[i]->GetDepart())==0) && (arrivee.compare(tableau[i]->GetArrivee())==0))
+		{
+			resultat.Ajouter(tableau[i]);
+		}
+	}
+	this->Sauvegarder(fichier,resultat);
 	
 }
 
 void Catalogue::Tri(string fichier, int borneinf, int borneMax)
 {
-	
+	Trajet** tableau=this->trajetsCatalogue.GetTrajets();
+	int nbAct=this->trajetsCatalogue.GetNbAct();
+	ListeTrajets resultat;
+	for(int i = borneinf ; i <= borneMax ; i++)
+	{
+		resultat.Ajouter(tableau[i]);
+	}
+	this->Sauvegarder(fichier,resultat);
 }
 
 void Catalogue::Charger(Catalogue &catalogue, string fichier)
@@ -270,7 +288,7 @@ void Catalogue::Charger(Catalogue &catalogue, string fichier)
 	}
 }
 
-//------------------------------------------------- Surcharge d'opérateurs
+//------------------------------------------------- Surcharge d'operateurs
 
 //-------------------------------------------- Constructeurs - destructeur
 Catalogue::Catalogue ( )
@@ -298,30 +316,29 @@ Catalogue::~Catalogue ( )
 
 //------------------------------------------------------------------ PRIVE
 
-//----------------------------------------------------- Méthodes protégées
+//----------------------------------------------------- Methodes protegees
 void Catalogue::Sauvegarder(string fichier, ListeTrajets &liste)
 {
-	fichier = "/Users/romaingoutte-fangeas/Google\ Drive/TP2\ /Sources/TP2/test.txt";
-	// Vérifier si le fichier existe
+	// Verifier si le fichier existe
 	ifstream is (fichier.c_str()); // on ouvre le fichier en lecture
 	if (!is.fail())
 	{
 		int choix;
-		cout << "Un fichier avec ce nom existe déjà. Que souhaitez vous faire ?" << endl << "1 : Ecraser" << endl << "2 : Ajouter" << endl << "3 : Choisir un nouveau nom" << endl << "Autre : Retour au menu principal" << endl;
+		cout << "Un fichier avec ce nom existe deja�. Que souhaitez vous faire ?" << endl << "1 : Ecraser" << endl << "2 : Ajouter" << endl << "3 : Choisir un nouveau nom" << endl << "Autre : Retour au menu principal" << endl;
 		cin >> choix;
 		if (choix == 1)
 		{
 			EcrireFichier(fichier, liste);
-			cout << "Le fichier a été écrasé" << endl;
+			cout << "Le fichier a ete ecrase" << endl;
 		}
 		else if (choix == 2)
 		{
-			/*Charger(fichier); // Attention à l'ordre !!!
+			/*Charger(fichier); // Attention a l'ordre !!!
 			 Sauvegarder(fichier);*/
 			// Pour mettre a jour le fichier, il faut utiliser ios::app dans la definition du flux :
 			// On va se placer a la fin du fichier afin de le modifier
 			cout << "Travaux en cours" << endl;
-			cout << "Le fichier a été mis à jour" << endl;
+			cout << "Le fichier a ete mis a jour" << endl;
 		}
 		else if (choix == 3)
 		{
@@ -335,19 +352,20 @@ void Catalogue::Sauvegarder(string fichier, ListeTrajets &liste)
 	{
 		cout << "Fichier inexistant" << endl;
 		EcrireFichier(fichier, liste);
+		cout << "Le fichier a ete cree" << endl;
 	}
 	cout << "Fin sauvegarde" << endl;
 }
 
 
-void Catalogue::EcrireFichier(string nomFichier, ListeTrajets &liste)
+void Catalogue::EcrireFichier(string nomFichier, ListeTrajets &liste) // DETRUIRE LA LISTE DE TRAJETS CREES
 {
 	ofstream os;
 	os.open(nomFichier.c_str());
 	
 	if(os)
 	{
-		cout << "En cours d'écriture" << endl;
+		cout << "En cours d'ecriture" << endl;
 		
 		int nbAct=liste.GetNbAct();
 		for(int i = 0 ; i < nbAct ; i++)
