@@ -288,6 +288,26 @@ void Catalogue::Charger(Catalogue &catalogue, string fichier)
 	}
 }
 
+void Catalogue::Charger(Catalogue &catalogue, string fichier, bool typeTrajet)
+{
+	
+}
+
+void Catalogue::Charger(Catalogue &catalogue, string fichier, string ville, bool typeVille)
+{
+	
+}
+
+void Catalogue::Charger(Catalogue &catalogue, string fichier, string depart, string arrivee)
+{
+	
+}
+
+void Catalogue::Charger(Catalogue &catalogue, string fichier, int borneInf, int borneSup)
+{
+	
+}
+
 //------------------------------------------------- Surcharge d'operateurs
 
 //-------------------------------------------- Constructeurs - destructeur
@@ -319,12 +339,18 @@ Catalogue::~Catalogue ( )
 //----------------------------------------------------- Methodes protegees
 void Catalogue::Sauvegarder(string fichier, ListeTrajets &liste)
 {
+	string extensionFichier = fichier.substr(fichier.size()-4, fichier.size());
+	cout << extensionFichier << endl;
+	if(extensionFichier.compare(".txt")!=0)
+	{
+		fichier.append(".txt");
+	}
 	// Verifier si le fichier existe
 	ifstream is (fichier.c_str()); // on ouvre le fichier en lecture
 	if (!is.fail())
 	{
 		int choix;
-		cout << "Un fichier avec ce nom existe deja . Que souhaitez vous faire ?" << endl << "1 : Ecraser" << endl << "2 : Ajouter" << endl << "3 : Choisir un nouveau nom" << endl << "Autre : Retour au menu principal" << endl;
+		cout << "Un fichier avec ce nom existe deja. Que souhaitez vous faire ?" << endl << "1 : Ecraser" << endl << "2 : Ajouter" << endl << "3 : Choisir un nouveau nom" << endl << "Autre : Retour au menu principal" << endl;
 		cin >> choix;
 		if (choix == 1)
 		{
