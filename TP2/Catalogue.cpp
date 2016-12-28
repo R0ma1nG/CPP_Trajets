@@ -287,9 +287,52 @@ void Catalogue::Charger(Catalogue &catalogue, string fichier)
 	}
 }
 
-void Catalogue::Charger(Catalogue &catalogue, string fichier, bool typeTrajet)
+void Catalogue::Charger(Catalogue &catalogue, string fichier, bool type)
 {
-	
+	ListeTrajets listeContenuFichier;
+	ifstream is;
+	is.open(fichier);
+	if(is)
+	{
+		string typeTrajet;
+		while(is >> typeTrajet)
+		{
+			if(typeTrajet.compare("#S")==0 && type == true)
+			{
+				is.seekg(-2, ios::cur); // On se repositionne au debut de la ligne, on respecte ainsi le contrat de la methode LireTrajetSimple
+				TrajetSimple ts(LireTrajetSimple(is));
+				if(type == true)
+				{
+					catalogue.Ajouter(ts.Copie());
+#ifdef MAP
+					cout << "---- Fin de lecture et ajout d'un TrajetSimple ----" << endl;
+#endif
+				}
+			}
+			else if(typeTrajet.compare("#C")==0 && type == false)
+			{
+				cout << "Trajet Compose" << endl;
+				is.seekg(-2, ios::cur);
+				TrajetCompose tc(LireTrajetCompose(is));
+				if (type == false)
+				{
+					catalogue.Ajouter(tc.Copie());
+#ifdef MAP
+					cout << "---- Fin de lecture et ajout d'un TrajetCompose ----" << endl;
+#endif
+				}
+			}
+			else
+			{
+				cerr << "Erreur de symbole" << endl;
+			}
+		}
+		is.close();
+	}
+	else
+	{
+		cerr << "Erreur d'ouverture du fichier " << fichier << endl;
+	}
 }
 
 void Catalogue::Charger(Catalogue &catalogue, string fichier, string ville, bool typeVille)

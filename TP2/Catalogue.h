@@ -64,7 +64,7 @@ public:
 	// Ajoute au 'catalogue' les trajets contenus dans le 'fichier'
 	// Contrat : le fichier est bien formé : il respecte les règles fixées par les methodes de sauvegarde
 	
-	void Charger(Catalogue &catalogue, string fichier, bool typeTrajet);
+	void Charger(Catalogue &catalogue, string fichier, bool type);
 	// Contrat : le fichier est bien formé : il respecte les règles fixées par les methodes de sauvegarde
 	
 	void Charger(Catalogue &catalogue, string fichier, string ville, bool typeVille);
