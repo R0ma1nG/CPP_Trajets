@@ -137,17 +137,17 @@ int main(int argv, char** argc)
 			{
 				case 1 :
 					// Tous les trajets
-					catalogue.Tri(nomFichier);
+					catalogue.Sauvegarder(nomFichier);
 					break;
 					
 				case 2 :
 					// Trajets simples
-					catalogue.Tri(nomFichier, true);
+					catalogue.Sauvegarder(nomFichier, true);
 					break;
 					
 				case 3 :
 					// Trajets composes
-					catalogue.Tri(nomFichier, false);
+					catalogue.Sauvegarder(nomFichier, false);
 					break;
 					
 				case 4 :
@@ -156,7 +156,7 @@ int main(int argv, char** argc)
 					string nomDepart;
 					cout << "Veuillez entrer votre ville de depart" << endl;
 					cin >> nomDepart;
-					catalogue.Tri(nomFichier, nomDepart, true);
+					catalogue.Sauvegarder(nomFichier, nomDepart, true);
 					break;
 				}
 										
@@ -166,7 +166,7 @@ int main(int argv, char** argc)
 					string nomArrivee;
 					cout << "Veuillez entrer votre ville d'arrivee" << endl;
 					cin >> nomArrivee;
-					catalogue.Tri(nomFichier, nomArrivee, false);
+					catalogue.Sauvegarder(nomFichier, nomArrivee, false);
 					break;
 				}
 					
@@ -179,7 +179,7 @@ int main(int argv, char** argc)
 					cin >> depart;
 					cout << "Veuillez entrer votre ville d'arrivee" << endl;
 					cin >> arrivee;
-					catalogue.Tri(nomFichier, depart, arrivee);
+					catalogue.Sauvegarder(nomFichier, depart, arrivee);
 					break;
 				}
 					
@@ -194,10 +194,10 @@ int main(int argv, char** argc)
 					cin >> borneMax;
 					if (borneInf <= borneMax)
 					{
-						catalogue.Tri(nomFichier, borneInf, borneMax);
+						catalogue.Sauvegarder(nomFichier, borneInf, borneMax);
 					}
 					else {
-						cout << "La borne minimale doit eter plus petite ou egale a la borne maximale " << endl;
+						cout << "La borne minimale doit etre plus petite ou egale a la borne maximale " << endl;
 					}
 					break;
 				}

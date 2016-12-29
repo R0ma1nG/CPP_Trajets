@@ -49,15 +49,16 @@ public:
 	// Retourne TRUE si depart est present dans le tableau
 	// Retourne FALSE sinon
 	
-	void Tri(string fichier);
+	void Sauvegarder(string fichier);
 	
-	void Tri(string fichier, bool typeTrajet);
+	void Sauvegarder(string fichier, bool typeTrajet);
 
-	void Tri(string fichier, string ville, bool typeVille);
+	void Sauvegarder(string fichier, string ville, bool typeVille);
+	//
 	
-	void Tri(string fichier, string depart, string arrivee);
+	void Sauvegarder(string fichier, string depart, string arrivee);
 	
-	void Tri(string fichier, int borneinf, int borneMax);
+	void Sauvegarder(string fichier, int borneinf, int borneMax);
 	
 	
 	void Charger(Catalogue &catalogue, string fichier);
@@ -94,12 +95,17 @@ protected:
 //----------------------------------------------------- Méthodes protégées
 	void EcrireFichier(string nom, ListeTrajets &liste);
 	void Sauvegarder(string fichier, ListeTrajets &liste);
+	bool VerifierExistenceFichier(string &fichier);
+	
+	void EcrireTrajet(ofstream &os, Trajet &trajet);
 	
 	TrajetSimple LireTrajetSimple(ifstream &is);
 	//Contrat : le curseur du ifstream est positionné au debut de la ligne contenant le trajet simple
+	// Le fluc d'entree est correctement initialisé et ouvert
 	
 	TrajetCompose LireTrajetCompose(ifstream &is);
 	//Contrat : le curseur du ifstream est positionné au début de la ligne contenant le trajet compose
+	// Le fluc d'entree est correctement initialisé et ouvert
 private:
 //------------------------------------------------------- Méthodes privées
 

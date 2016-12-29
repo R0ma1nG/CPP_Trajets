@@ -63,7 +63,7 @@ class TrajetSimple : public Trajet
 	Trajet * Copie()const;
 	// Renvoie un pointeur sur une copie en profondeur de l'objet actuel
 	
-	virtual bool getTypeTrajet()const{
+	virtual bool GetTypeTrajet()const{
 		return true;
 	}
 

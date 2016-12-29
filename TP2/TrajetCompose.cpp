@@ -51,10 +51,9 @@ string TrajetCompose::Encoder()const
 {
 	string s="#C\r\n";
 	int i;
-	Trajet** tableau=trajets.GetTrajets();
 	for(i=0;i<trajets.GetNbAct();i++)
 	{
-		s.append(tableau[i]->Encoder());
+		s.append(trajets.GetTrajets()[i]->Encoder());
 	}
 	s.append(";\r\n");
 	return s;

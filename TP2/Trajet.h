@@ -36,7 +36,7 @@ public:
 	
 	virtual string Encoder()const=0;
 	
-	virtual bool getTypeTrajet()const=0;
+	virtual bool GetTypeTrajet()const=0;
 
 //------------------------------------------------- Surcharge d'opérateurs
 

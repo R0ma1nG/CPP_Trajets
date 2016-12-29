@@ -162,94 +162,147 @@ bool Catalogue::villeVisitee(const char * ville, char **tableau) const
 	return false;
 }
 
-void Catalogue::Tri(string fichier)
+void Catalogue::Sauvegarder(string fichier)
 {
-	Sauvegarder(fichier, trajetsCatalogue);
+	//Sauvegarder(fichier, trajetsCatalogue);
+	bool erase = VerifierExistenceFichier(fichier);
+	ofstream os;
+	os.open(fichier.c_str(), (erase?ios::out : ios::out|ios::app));
+	if(os)
+	{
+		for(int i = 0 ; i < trajetsCatalogue.GetNbAct() ; i++)
+		{
+			#ifdef MAP
+				cout << "Ajout d'un trajet a la sauvegarde"<< endl;
+			#endif
+			EcrireTrajet(os, *trajetsCatalogue.GetTrajets()[i]);
+		}
+		os.close();
+	}
+	else
+	{
+		cerr << "Erreur sur le flux de sortie" << endl;
+	}
 }
 
-void Catalogue::Tri(string fichier, bool typeTrajet)
+void Catalogue::Sauvegarder(string fichier, bool typeTrajet)
 // true : trajet simple
 // false : trajet compose
 {
-	ListeTrajets listeTmp;
-	for(int i = 0 ; i < trajetsCatalogue.GetNbAct() ; i++)
+	bool erase = VerifierExistenceFichier(fichier);
+	ofstream os;
+	os.open(fichier.c_str(), (erase?ios::out : ios::out|ios::app));
+	if(os)
 	{
-		//if(typeTrajet == trajetsCatalogue.GetTrajets()[i]->getTypeTrajet())
-		if(typeTrajet && dynamic_cast<TrajetSimple *>(trajetsCatalogue.GetTrajets()[i]) != nullptr)
+		for(int i = 0 ; i < trajetsCatalogue.GetNbAct() ; i++)
 		{
-			#ifdef MAP
-				cout << "Trajet Simple" <<endl;
-			#endif
-			listeTmp.Ajouter(trajetsCatalogue.GetTrajets()[i]->Copie());
-		}
-		else if(!typeTrajet && dynamic_cast<TrajetCompose *>(trajetsCatalogue.GetTrajets()[i]) != nullptr)
-		{
-			#ifdef MAP
-				cout << "Trajet Compose" << endl;
-			#endif
-			listeTmp.Ajouter(trajetsCatalogue.GetTrajets()[i]->Copie());
-		}
-	}
-	Sauvegarder(fichier, listeTmp);
-}
-
-void Catalogue::Tri(string fichier,string ville,bool typeVille){
-	Trajet** tableau=this->trajetsCatalogue.GetTrajets();
-	int nbAct=this->trajetsCatalogue.GetNbAct();
-	ListeTrajets resultat;
-	if(typeVille){
-		//La ville est le depart
-		for(int i = 0 ; i < nbAct ; i++)
-		{
-			if(ville.compare(tableau[i]->GetDepart())==0){
-				resultat.Ajouter(tableau[i]);
+			if(typeTrajet == trajetsCatalogue.GetTrajets()[i]->GetTypeTrajet())
+			{
+				#ifdef MAP
+					cout << "Ajout d'un trajet a la sauvegarde"<< endl;
+				#endif
+				EcrireTrajet(os, *trajetsCatalogue.GetTrajets()[i]);
 			}
 		}
+		os.close();
 	}
-	else{
-		// La ville est l'arrivee
-		for(int i = 0 ; i < nbAct ; i++)
+	else
+	{
+		cerr << "Erreur sur le flux de sortie" << endl;
+	}
+}
+
+void Catalogue::Sauvegarder(string fichier, string ville, bool typeVille)
+// true : depart
+// false : arrivee
+{
+	bool erase = VerifierExistenceFichier(fichier);
+	ofstream os;
+	os.open(fichier.c_str(), (erase?ios::out : ios::out|ios::app));
+	if(os)
+	{
+		for(int i = 0 ; i < trajetsCatalogue.GetNbAct() ; i++)
 		{
-			if(ville.compare(tableau[i]->GetArrivee())==0){
-				resultat.Ajouter(tableau[i]);
+			if((typeVille && ville.compare(trajetsCatalogue.GetTrajets()[i]->GetDepart())==0)||
+			   (!typeVille && ville.compare(trajetsCatalogue.GetTrajets()[i]->GetArrivee())==0))
+			{
+				#ifdef MAP
+					cout << "Ajout d'un trajet a la sauvegarde"<< endl;
+				#endif
+				EcrireTrajet(os, *trajetsCatalogue.GetTrajets()[i]);
 			}
 		}
+		os.close();
 	}
-	this->Sauvegarder(fichier,resultat);
+	else
+	{
+		cerr << "Erreur sur le flux de sortie" << endl;
+	}
 }
 
-void Catalogue::Tri(string fichier, string depart, string arrivee)
+void Catalogue::Sauvegarder(string fichier, string depart, string arrivee)
 {
-	Trajet** tableau=this->trajetsCatalogue.GetTrajets();
-	int nbAct=this->trajetsCatalogue.GetNbAct();
-	ListeTrajets resultat;
-	for(int i = 0 ; i < nbAct ; i++)
+	bool erase = VerifierExistenceFichier(fichier);
+	ofstream os;
+	os.open(fichier.c_str(), (erase?ios::out : ios::out|ios::app));
+	if(os)
 	{
-		if((depart.compare(tableau[i]->GetDepart())==0) && (arrivee.compare(tableau[i]->GetArrivee())==0))
+		for(int i = 0 ; i < trajetsCatalogue.GetNbAct() ; i++)
 		{
-			resultat.Ajouter(tableau[i]);
+			if(depart.compare(trajetsCatalogue.GetTrajets()[i]->GetDepart())==0 && arrivee.compare(trajetsCatalogue.GetTrajets()[i]->GetArrivee())==0)
+			{
+#ifdef MAP
+				cout << "Ajout d'un trajet a la sauvegarde"<< endl;
+#endif
+				EcrireTrajet(os, *trajetsCatalogue.GetTrajets()[i]);
+			}
 		}
+		os.close();
 	}
-	this->Sauvegarder(fichier,resultat);
+	else
+	{
+		cerr << "Erreur sur le flux de sortie" << endl;
+	}
 }
 
-void Catalogue::Tri(string fichier, int borneinf, int borneMax)
+void Catalogue::Sauvegarder(string fichier, int borneInf, int borneMax)
 {
-	Trajet** tableau=this->trajetsCatalogue.GetTrajets();
-	int nbAct=this->trajetsCatalogue.GetNbAct();
-	ListeTrajets resultat;
-	for(int i = borneinf ; i <= borneMax ; i++)
+	// Verifications sur les bornes
+	(borneInf < 0 ? borneInf = 0 : true);
+	(borneMax > trajetsCatalogue.GetNbAct() ? borneMax = trajetsCatalogue.GetNbAct() : true);
+	if(borneInf > borneMax)
 	{
-		resultat.Ajouter(tableau[i]);
+		cerr << "Erreur : les bornes min et max sont incorrectes" << endl;
+		cerr << "Retour au menu..." << endl;
+		return;
 	}
-	this->Sauvegarder(fichier,resultat);
+	// Verification sur le nom du fichier
+	bool erase = VerifierExistenceFichier(fichier);
+	// Debut de la sauvegarde
+	ofstream os;
+	os.open(fichier.c_str(), (erase?ios::out : ios::out|ios::app));
+	if(os)
+	{
+		for(int i = borneInf ; i < borneMax ; i++)
+		{
+#ifdef MAP
+			cout << "Ajout d'un trajet a la sauvegarde"<< endl;
+#endif
+			EcrireTrajet(os, *trajetsCatalogue.GetTrajets()[i]);
+		}
+		os.close();
+	}
+	else
+	{
+		cerr << "Erreur sur le flux de sortie" << endl;
+	}
 }
 
 void Catalogue::Charger(Catalogue &catalogue, string fichier)
 {
 	ListeTrajets listeContenuFichier;
 	ifstream is;
-	is.open(fichier);
+	is.open(fichier.c_str(), ios::in);
 	if(is)
 	{
 		string typeTrajet;
@@ -266,7 +319,6 @@ void Catalogue::Charger(Catalogue &catalogue, string fichier)
 			}
 			else if(typeTrajet.compare("#C")==0)
 			{
-				cout << "Trajet Compose" << endl;
 				is.seekg(-2, ios::cur);
 				TrajetCompose tc(LireTrajetCompose(is));
 				catalogue.Ajouter(tc.Copie());
@@ -291,13 +343,13 @@ void Catalogue::Charger(Catalogue &catalogue, string fichier, bool type)
 {
 	ListeTrajets listeContenuFichier;
 	ifstream is;
-	is.open(fichier);
+	is.open(fichier.c_str(), ios::in);
 	if(is)
 	{
 		string typeTrajet;
 		while(is >> typeTrajet)
 		{
-			if(typeTrajet.compare("#S")==0 && type == true)
+			if(typeTrajet.compare("#S")==0)
 			{
 				is.seekg(-2, ios::cur); // On se repositionne au debut de la ligne, on respecte ainsi le contrat de la methode LireTrajetSimple
 				TrajetSimple ts(LireTrajetSimple(is));
@@ -309,9 +361,8 @@ void Catalogue::Charger(Catalogue &catalogue, string fichier, bool type)
 #endif
 				}
 			}
-			else if(typeTrajet.compare("#C")==0 && type == false)
+			else if(typeTrajet.compare("#C")==0)
 			{
-				cout << "Trajet Compose" << endl;
 				is.seekg(-2, ios::cur);
 				TrajetCompose tc(LireTrajetCompose(is));
 				if (type == false)
@@ -337,17 +388,146 @@ void Catalogue::Charger(Catalogue &catalogue, string fichier, bool type)
 
 void Catalogue::Charger(Catalogue &catalogue, string fichier, string ville, bool typeVille)
 {
-	
+	ListeTrajets listeContenuFichier;
+		ifstream is;
+		is.open(fichier.c_str(), ios::in);
+		if(is)
+		{
+			string typeTrajet;
+			while(is >> typeTrajet)
+			{
+				if(typeTrajet.compare("#S")==0)
+				{
+					is.seekg(-2, ios::cur); // On se repositionne au debut de la ligne, on respecte ainsi le contrat de la methode LireTrajetSimple
+					TrajetSimple ts(LireTrajetSimple(is));
+					if((typeVille == true && ((string)(ts.GetDepart())).compare(ville)==0) || (typeVille == false && ((string)ts.GetArrivee()).compare(ville)==0))
+					{
+						catalogue.Ajouter(ts.Copie());
+	#ifdef MAP
+						cout << "---- Fin de lecture et ajout d'un TrajetSimple ----" << endl;
+	#endif
+					}
+				}
+				else if(typeTrajet.compare("#C")==0)
+				{
+					is.seekg(-2, ios::cur);
+					TrajetCompose tc(LireTrajetCompose(is));
+					if((typeVille == true && ((string)tc.GetDepart()).compare(ville)==0) || (typeVille == false && ((string)tc.GetArrivee()).compare(ville)==0))
+					{
+						catalogue.Ajouter(tc.Copie());
+	#ifdef MAP
+						cout << "---- Fin de lecture et ajout d'un TrajetCompose ----" << endl;
+	#endif
+					}
+				}
+				else
+				{
+					cerr << "Erreur de symbole" << endl;
+				}
+			}
+			is.close();
+		}
+		else
+		{
+			cerr << "Erreur d'ouverture du fichier " << fichier << endl;
+		}
 }
 
 void Catalogue::Charger(Catalogue &catalogue, string fichier, string depart, string arrivee)
 {
-	
+	ListeTrajets listeContenuFichier;
+	ifstream is;
+	is.open(fichier.c_str(), ios::in);
+	if(is)
+	{
+		string typeTrajet;
+		while(is >> typeTrajet)
+		{
+			if(typeTrajet.compare("#S")==0)
+			{
+				is.seekg(-2, ios::cur); // On se repositionne au debut de la ligne, on respecte ainsi le contrat de la methode LireTrajetSimple
+				TrajetSimple ts(LireTrajetSimple(is));
+				if(((string)ts.GetDepart()).compare(depart)== 0 && ((string)ts.GetArrivee()).compare(arrivee)==0)
+				{
+					catalogue.Ajouter(ts.Copie());
+#ifdef MAP
+					cout << "---- Fin de lecture et ajout d'un TrajetSimple ----" << endl;
+#endif
+				}
+			}
+			else if(typeTrajet.compare("#C")==0)
+			{
+				is.seekg(-2, ios::cur);
+				TrajetCompose tc(LireTrajetCompose(is));
+				if(((string)tc.GetDepart()).compare(depart)== 0 && ((string)tc.GetArrivee()).compare(arrivee)==0)
+				{
+					catalogue.Ajouter(tc.Copie());
+#ifdef MAP
+					cout << "---- Fin de lecture et ajout d'un TrajetCompose ----" << endl;
+#endif
+				}
+			}
+			else
+			{
+				cerr << "Erreur de symbole" << endl;
+			}
+		}
+		is.close();
+	}
+	else
+	{
+		cerr << "Erreur d'ouverture du fichier " << fichier << endl;
+	}
 }
 
 void Catalogue::Charger(Catalogue &catalogue, string fichier, int borneInf, int borneSup)
 {
-	
+	ListeTrajets listeContenuFichier;
+	ifstream is;
+	is.open(fichier.c_str(), ios::in);
+	int compteur =0;
+	if(is)
+	{
+		string typeTrajet;
+		while(is >> typeTrajet)
+		{
+			if(typeTrajet.compare("#S")==0)
+			{
+				is.seekg(-2, ios::cur); // On se repositionne au debut de la ligne, on respecte ainsi le contrat de la méthode LireTrajetSimple
+				TrajetSimple ts(LireTrajetSimple(is));
+				if (compteur >= borneInf && compteur <= borneSup)
+				{
+					catalogue.Ajouter(ts.Copie());
+					#ifdef MAP
+					cout << "---- Fin de lecture et ajout d'un TrajetSimple ----" << endl;
+					#endif
+				}
+				compteur ++;
+			}
+			else if(typeTrajet.compare("#C")==0)
+			{
+				is.seekg(-2, ios::cur);
+				TrajetCompose tc(LireTrajetCompose(is));
+				if (compteur >= borneInf && compteur <= borneSup)
+				{
+					catalogue.Ajouter(tc.Copie());
+					#ifdef MAP
+					cout << "---- Fin de lecture et ajout d'un TrajetCompose ----" << endl;
+					#endif
+				}
+				compteur ++;
+			}
+			else
+			{
+				cerr << "Erreur de symbole" << endl;
+ 			}
+		}
+		is.close();
+	}
+	else
+	{
+		cerr << "Erreur d'ouverture du fichier " << fichier << endl;
+	}
 }
 
 //------------------------------------------------- Surcharge d'operateurs
@@ -379,14 +559,16 @@ Catalogue::~Catalogue ( )
 //------------------------------------------------------------------ PRIVE
 
 //----------------------------------------------------- Methodes protegees
-void Catalogue::Sauvegarder(string fichier, ListeTrajets &liste)
+bool Catalogue::VerifierExistenceFichier(string &fichier)
 {
+	// VERIFICATION DE L'EXTENSION DU FICHIER
 	string extensionFichier = fichier.substr(fichier.size()-4, fichier.size());
-	cout << extensionFichier << endl;
 	if(extensionFichier.compare(".txt")!=0)
 	{
 		fichier.append(".txt");
 	}
+	cout << extensionFichier << endl << fichier << endl;
+	
 	// Verifier si le fichier existe
 	ifstream is (fichier.c_str()); // on ouvre le fichier en lecture
 	if (!is.fail())
@@ -396,8 +578,7 @@ void Catalogue::Sauvegarder(string fichier, ListeTrajets &liste)
 		cin >> choix;
 		if (choix == 1)
 		{
-			EcrireFichier(fichier, liste);
-			cout << "Le fichier a ete ecrase" << endl;
+			return true;
 		}
 		else if (choix == 2)
 		{
@@ -405,47 +586,30 @@ void Catalogue::Sauvegarder(string fichier, ListeTrajets &liste)
 			 Sauvegarder(fichier);*/
 			// Pour mettre a jour le fichier, il faut utiliser ios::app dans la definition du flux :
 			// On va se placer a la fin du fichier afin de le modifier
-			cout << "Travaux en cours" << endl;
-			cout << "Le fichier a ete mis a jour" << endl;
+			return false;
 		}
 		else if (choix == 3)
 		{
 			string newName;
 			cout << "Veuillez choisir un nouveau nom " << endl;
 			cin >> newName;
-			Sauvegarder(newName, liste);
+			VerifierExistenceFichier(newName);
 		}
 	}
-	else
-	{
-		cout << "Fichier inexistant" << endl;
-		EcrireFichier(fichier, liste);
-		cout << "Le fichier a ete cree" << endl;
-	}
-	cout << "Fin sauvegarde" << endl;
+	return true;
 }
 
-
-void Catalogue::EcrireFichier(string nomFichier, ListeTrajets &liste) // DETRUIRE LA LISTE DE TRAJETS CREES
+void Catalogue::EcrireTrajet(ofstream &os, Trajet &trajet)
 {
-	ofstream os;
-	os.open(nomFichier.c_str());
-	
 	if(os)
 	{
 		cout << "En cours d'ecriture" << endl;
-		
-		int nbAct=liste.GetNbAct();
-		for(int i = 0 ; i < nbAct ; i++)
-		{
-			string nextLine = trajetsCatalogue.GetTrajets()[i]->Encoder();
-			os << nextLine;
-		}
-		os.close();
+		string nextLine = trajet.Encoder();
+		os << nextLine;
 	}
 	else
 	{
-		cerr << "Erreur d'ouverture" << endl;
+		cerr << "Erreur sur le flux de sortie" << endl;
 	}
 }
 
@@ -498,7 +662,6 @@ TrajetCompose Catalogue::LireTrajetCompose(ifstream & is)
 	string typeTrajet;
 	while (is >> typeTrajet && typeTrajet.compare(";")!=0)
 	{
-		cout << typeTrajet << endl;
 		if(typeTrajet.compare("#S")==0)
 		{
 			is.seekg(-2, ios::cur); // On se repositionne au debut de la ligne, on respecte ainsi le contrat de la méthode LireTrajetSimple
@@ -507,7 +670,6 @@ TrajetCompose Catalogue::LireTrajetCompose(ifstream & is)
 		}
 		else if(typeTrajet.compare("#C")==0)
 		{
-			cout << "Trajet Compose" << endl;
 			is.seekg(-2, ios::cur);
 			TrajetCompose tcAjout(LireTrajetCompose(is));
 			tc.AjouterTrajet(tcAjout.Copie());

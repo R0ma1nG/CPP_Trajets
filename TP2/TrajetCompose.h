@@ -57,7 +57,7 @@ public:
 	
 	virtual string Encoder()const;
 	
-	virtual bool getTypeTrajet()const{
+	virtual bool GetTypeTrajet()const{
 		return false;
 	}
 
