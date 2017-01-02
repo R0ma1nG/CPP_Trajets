@@ -1,7 +1,7 @@
 /*************************************************************************
- Main  -  classe main du TP2 HÃ©ritage
+ Main  -  classe main du TP2 Heritage
  -------------------
- dÃ©but                : 16 nov. 2016
+ debut                : 16 nov. 2016
  copyright            : (C) 2016 par rgouttefangeas
  *************************************************************************/
 
@@ -216,22 +216,28 @@ int main(int argv, char** argc)
 			cin >> choixCharg;
 			cout << "Veuillez choisir le nom du fichier a charger" << endl;
 			cin >> nomFichier;
+			// VERIFICATION DE L'EXTENSION DU FICHIER
+			string extensionFichier = nomFichier.substr(nomFichier.size()-4, nomFichier.size());
+			if(extensionFichier.compare(".txt")!=0)
+			{
+				nomFichier.append(".txt");
+			}
 			
 			switch(choixCharg)
 			{
 				case 1 :
 					// Tous les trajets
-					catalogue.Charger(catalogue, nomFichier);
+					catalogue.Charger(nomFichier);
 					break;
 					
 				case 2 :
 					// Trajets simples
-					catalogue.Charger(catalogue, nomFichier, true);
+					catalogue.Charger(nomFichier, true);
 					break;
 					
 				case 3 :
 					// Trajets composes
-					catalogue.Charger(catalogue, nomFichier, false);
+					catalogue.Charger(nomFichier, false);
 					break;
 					
 				case 4 :
@@ -240,7 +246,7 @@ int main(int argv, char** argc)
 					string nomDepart;
 					cout << "Veuillez entrer votre ville de depart" << endl;
 					cin >> nomDepart;
-					catalogue.Charger(catalogue, nomFichier, nomDepart, true);
+					catalogue.Charger(nomFichier, nomDepart, true);
 					break;
 				}
 					
@@ -250,7 +256,7 @@ int main(int argv, char** argc)
 					string nomArrivee;
 					cout << "Veuillez entrer votre ville d'arrivee" << endl;
 					cin >> nomArrivee;
-					catalogue.Charger(catalogue, nomFichier, nomArrivee, false);
+					catalogue.Charger(nomFichier, nomArrivee, false);
 					break;
 				}
 					
@@ -263,7 +269,7 @@ int main(int argv, char** argc)
 					cin >> nomDepart;
 					cout << "Veuillez entrer votre ville d'arrivee" << endl;
 					cin >> nomArrivee;
-					catalogue.Charger(catalogue, nomFichier, nomDepart, nomArrivee);
+					catalogue.Charger(nomFichier, nomDepart, nomArrivee);
 					break;
 				}
 					
@@ -278,7 +284,7 @@ int main(int argv, char** argc)
 					cin >> borneMax;
 					if (borneInf <= borneMax) // Il y a d'autres test à vérifier
 					{
-						catalogue.Charger(catalogue, nomFichier, borneInf, borneMax);
+						catalogue.Charger(nomFichier, borneInf, borneMax);
 					}
 					else {
 						cout << "La borne minimale doit eter plus petite ou egale a la borne maximale " << endl;

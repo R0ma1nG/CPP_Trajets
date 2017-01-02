@@ -50,31 +50,46 @@ public:
 	// Retourne FALSE sinon
 	
 	void Sauvegarder(string fichier);
+	// Ecrit dans 'fichier' tous les trajets du catalogue
 	
 	void Sauvegarder(string fichier, bool typeTrajet);
-
+	// Ecrit dans 'fichier' les trajets suivants :
+	// typeTrajet = true : uniquement les trajets simples
+	// typeTrajet = false: uniquement les trajets composes
+	
 	void Sauvegarder(string fichier, string ville, bool typeVille);
-	//
+	// Ecrit dans 'fichier' les trajets suivants :
+	// Au depart de 'ville' si typeVille = true
+	// Arrivant a 'ville' si typeVille = false
 	
 	void Sauvegarder(string fichier, string depart, string arrivee);
+	// Ecrit dans 'fichier' les trajets au depart de 'depart' et arrivant a 'arrivee'
 	
 	void Sauvegarder(string fichier, int borneinf, int borneMax);
+	// Ecrit dans 'fichier' les trajets du catalogue compris entre le borneInf-ieme et le borneSup-ieme
 	
-	
-	void Charger(Catalogue &catalogue, string fichier);
-	// Ajoute au 'catalogue' les trajets contenus dans le 'fichier'
+	void Charger(string fichier);
+	// Ajoute au catalogue les trajets contenus dans le 'fichier'
 	// Contrat : le fichier est bien formé : il respecte les règles fixées par les methodes de sauvegarde
 	
-	void Charger(Catalogue &catalogue, string fichier, bool type);
+	void Charger(string fichier, bool type);
+	// Ajoute les trajets contenus dans le fichier  dans le catalogue :
+	// type = true --> Trajets Simple
+	// type = false--> Trajets Compose
 	// Contrat : le fichier est bien formé : il respecte les règles fixées par les methodes de sauvegarde
 	
-	void Charger(Catalogue &catalogue, string fichier, string ville, bool typeVille);
+	void Charger(string fichier, string ville, bool typeVille);
+	// Ajoute les trajets contenus dans le fichier dans le catalogue :
+	// typeVille = true  --> ville est le point de depart
+	// typeVille = false --> ville est le point d'arrivee
 	// Contrat : le fichier est bien formé : il respecte les règles fixées par les methodes de sauvegarde
 	
-	void Charger(Catalogue &catalogue, string fichier, string depart, string arrivee);
+	void Charger(string fichier, string depart, string arrivee);
+	// Ajoute les trajets contenus dans le fichier au depart de 'depart' et arrivant a 'arrivee' dans le catalogue.
 	// Contrat : le fichier est bien formé : il respecte les règles fixées par les methodes de sauvegarde
 	
-	void Charger(Catalogue &catalogue, string fichier, int borneInf, int borneSup);
+	void Charger(string fichier, int borneInf, int borneSup);
+	// Ajoute les trajets contenus dans le fichier a partir du 'borneInf'ieme jusqu'au 'borneSup'ieme dans le catalogue.
 	// Contrat : le fichier est bien formé : il respecte les règles fixées par les methodes de sauvegarde
 	
 //------------------------------------------------- Surcharge d'opérateurs
@@ -93,11 +108,15 @@ public:
 
 protected:
 //----------------------------------------------------- Méthodes protégées
-	void EcrireFichier(string nom, ListeTrajets &liste);
-	void Sauvegarder(string fichier, ListeTrajets &liste);
 	bool VerifierExistenceFichier(string &fichier);
+	// Ajoute l'extension .txt au nom de fichier si elle n'est pas presente
+	// Verifie si le fichier ayant comme nom le parametre existe
+	// - Si il existe, l'utilisateur peut l'effacer ou le mettre a jour
+	// - Si il n'existe pas tout est ok
 	
 	void EcrireTrajet(ofstream &os, Trajet &trajet);
+	// Ecrit dans le fichier (la ou est positionne le curseur du ofstream) le trajet 'trajet' formaté
+	// Contrat : le flux de sortie est défini et ouvert sur le fichier que l'on doit modifier
 	
 	TrajetSimple LireTrajetSimple(ifstream &is);
 	//Contrat : le curseur du ifstream est positionné au debut de la ligne contenant le trajet simple
