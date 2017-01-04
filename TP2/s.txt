@@ -1,0 +1,7 @@
+#S $DA$AB$TC
+#S $DD$AG$TJ
+#S $DD$AF$TC
+#C
+#S $DA$AD$TC
+#S $DD$AF$TC
+;
