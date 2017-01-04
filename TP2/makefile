@@ -1,7 +1,7 @@
 #Authors : Quentin, Victor, Romain
 
 FLAGS=-Wall -std=c++0x 
-CFLAGS=-c 
+CFLAGS=-c -D MAP
 COMP=g++
 EXENAME=TP2
 
@@ -22,4 +22,7 @@ TrajetCompose.o : TrajetCompose.h TrajetCompose.cpp
 	
 Main.o: Main.cpp
 	$(COMP) $(CFLAGS) Main.cpp $(FLAGS)
+
+clean : 
+	rm -rf *.o
 

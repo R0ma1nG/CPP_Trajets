@@ -37,11 +37,11 @@ public:
 	// Renvoie True si l'ajout a été effectué
 	// Renvoie False si une erreur a été détectée
 
-	void RechercheSimple(char* depart, char* arrivee) const;
+	void RechercheSimple(char * depart, char * arrivee) const;
 	// Fonction obsolete
 	// Affiche tous les trajets simples ou composes allant d'une ville de depart a une ville d'arrivee sans composition de trajets ente eux
 
-	void RechercheComplexe(char * depart, char * arrivee) const;
+	void RechercheComplexe(const char * depart, const char * arrivee) const;
 	// Affiche tous les itinéraires possibles avec le catalogue actuel pour aller de depart a arrivee
 
 	bool villeVisitee(const char * ville, char **tableau) const;

@@ -20,7 +20,7 @@ using namespace std;
 //------------------------------------------------------ Include personnel
 #include "Catalogue.h"
 //------------------------------------------------------------- Constantes
-#define MAP true
+//#define MAP true
 //---------------------------------------------------- Variables de classe
 
 //----------------------------------------------------------- Types privés
@@ -81,12 +81,12 @@ void Catalogue::RechercheSimple(char* depart, char* arrivee) const
 	}
 } // Fin de RechercheSimple
 
-void Catalogue::RechercheComplexe(char * depart, char * arrivee) const
+void Catalogue::RechercheComplexe(const char * depart, const char * arrivee) const
 //Parcours du catalogue, plusieurs tests permettent de sélectionner les trajets qui peuvent êter intéressants
 // Complexité de l'agorithme : 0(n)
 {
 	if(trajetsCatalogue.GetNbAct() != 0){
-		char * departAct = depart;  // on cherche les trajets partant de departAct. Initialisée à depart
+		char * departAct = const_cast<char*>(depart);  // on cherche les trajets partant de departAct. Initialisée à depart
 		Trajet ** trajets = trajetsCatalogue.GetTrajets();  // Catalogue des trajets existants
 		ListeTrajets parcours;  // Liste des trajets modélisant le parcours actuel
 		char * villesParcourue[trajetsCatalogue.GetNbAct()*2]; // Tableau contenant les noms des villes précédemment parcourues.
@@ -183,6 +183,7 @@ void Catalogue::Sauvegarder(string fichier)
 	{
 		cerr << "Erreur sur le flux de sortie" << endl;
 	}
+	cout << "Sauvegarde terminée" << endl;
 }
 
 void Catalogue::Sauvegarder(string fichier, bool typeTrajet)
@@ -210,6 +211,7 @@ void Catalogue::Sauvegarder(string fichier, bool typeTrajet)
 	{
 		cerr << "Erreur sur le flux de sortie" << endl;
 	}
+	cout << "Sauvegarde terminée" << endl;
 }
 
 void Catalogue::Sauvegarder(string fichier, string ville, bool typeVille)
@@ -238,6 +240,7 @@ void Catalogue::Sauvegarder(string fichier, string ville, bool typeVille)
 	{
 		cerr << "Erreur sur le flux de sortie" << endl;
 	}
+	cout << "Sauvegarde terminée" << endl;
 }
 
 void Catalogue::Sauvegarder(string fichier, string depart, string arrivee)
@@ -263,12 +266,13 @@ void Catalogue::Sauvegarder(string fichier, string depart, string arrivee)
 	{
 		cerr << "Erreur sur le flux de sortie" << endl;
 	}
+	cout << "Sauvegarde terminée" << endl;
 }
 
 void Catalogue::Sauvegarder(string fichier, int borneInf, int borneMax)
 {
 	// Verifications sur les bornes
-	(borneInf < 0 ? borneInf = 0 : true);
+	(borneInf < 1 ? borneInf = 1 : true);
 	(borneMax > trajetsCatalogue.GetNbAct() ? borneMax = trajetsCatalogue.GetNbAct() : true);
 	if(borneInf > borneMax)
 	{
@@ -276,6 +280,8 @@ void Catalogue::Sauvegarder(string fichier, int borneInf, int borneMax)
 		cerr << "Retour au menu..." << endl;
 		return;
 	}
+	cout << borneInf<<endl;
+	cout << borneMax<< endl;
 	// Verification sur le nom du fichier
 	bool erase = VerifierExistenceFichier(fichier);
 	// Debut de la sauvegarde
@@ -283,7 +289,7 @@ void Catalogue::Sauvegarder(string fichier, int borneInf, int borneMax)
 	os.open(fichier.c_str(), (erase?ios::out : ios::out|ios::app));
 	if(os)
 	{
-		for(int i = borneInf ; i < borneMax ; i++)
+		for(int i = borneInf-1 ; i < borneMax ; i++)
 		{
 #ifdef MAP
 			cout << "Ajout d'un trajet a la sauvegarde"<< endl;
@@ -296,6 +302,7 @@ void Catalogue::Sauvegarder(string fichier, int borneInf, int borneMax)
 	{
 		cerr << "Erreur sur le flux de sortie" << endl;
 	}
+	cout << "Sauvegarde terminée" << endl;
 }
 
 void Catalogue::Charger(string fichier)
@@ -336,6 +343,7 @@ void Catalogue::Charger(string fichier)
 	{
 		cerr << "Erreur d'ouverture du fichier " << fichier << endl;
 	}
+	cout << "Trajets ajoutés au catalogue" << endl;
 }
 
 void Catalogue::Charger(string fichier, bool type)
@@ -382,6 +390,7 @@ void Catalogue::Charger(string fichier, bool type)
 	{
 		cerr << "Erreur d'ouverture du fichier " << fichier << endl;
 	}
+	cout << "Trajets ajoutés au catalogue" << endl;
 }
 
 void Catalogue::Charger(string fichier, string ville, bool typeVille)
@@ -428,6 +437,7 @@ void Catalogue::Charger(string fichier, string ville, bool typeVille)
 	{
 		cerr << "Erreur d'ouverture du fichier " << fichier << endl;
 	}
+	cout << "Trajets ajoutés au catalogue" << endl;
 }
 
 void Catalogue::Charger(string fichier, string depart, string arrivee)
@@ -474,10 +484,12 @@ void Catalogue::Charger(string fichier, string depart, string arrivee)
 	{
 		cerr << "Erreur d'ouverture du fichier " << fichier << endl;
 	}
+	cout << "Trajets ajoutés au catalogue" << endl;
 }
 
 void Catalogue::Charger(string fichier, int borneInf, int borneSup)
 {
+	(borneInf < 1 ? borneInf = 1 : true);
 	ifstream is;
 	is.open(fichier.c_str(), ios::in);
 	int compteur =0;
@@ -490,7 +502,7 @@ void Catalogue::Charger(string fichier, int borneInf, int borneSup)
 			{
 				is.seekg(-2, ios::cur); // On se repositionne au debut de la ligne, on respecte ainsi le contrat de la méthode LireTrajetSimple
 				TrajetSimple ts(LireTrajetSimple(is));
-				if (compteur >= borneInf && compteur <= borneSup)
+				if (compteur >= borneInf-1 && compteur < borneSup)
 				{
 					Ajouter(ts.Copie());
 					#ifdef MAP
@@ -523,6 +535,7 @@ void Catalogue::Charger(string fichier, int borneInf, int borneSup)
 	{
 		cerr << "Erreur d'ouverture du fichier " << fichier << endl;
 	}
+	cout << "Trajets ajoutés au catalogue" << endl;
 }
 
 //------------------------------------------------- Surcharge d'operateurs
@@ -560,11 +573,19 @@ bool Catalogue::VerifierExistenceFichier(string &fichier)
 // Tant que le nom de fichier n'est pas correct, la méthode est recursive et ne permet pas de continuer la sauvegarde.
 {
 	// VERIFICATION DE L'EXTENSION DU FICHIER
-	string extensionFichier = fichier.substr(fichier.size()-4, fichier.size());
-	if(extensionFichier.compare(".txt")!=0)
+	if(fichier.size() >=  4)
+	{
+		string extensionFichier = fichier.substr(fichier.size()-4, fichier.size());
+		if(extensionFichier.compare(".txt")!=0)
+		{
+			fichier.append(".txt");
+		}
+	}
+	else
 	{
 		fichier.append(".txt");
 	}
+	
 	
 	// Verifier si le fichier existe
 	ifstream is (fichier.c_str()); // on ouvre le fichier en lecture
@@ -579,8 +600,6 @@ bool Catalogue::VerifierExistenceFichier(string &fichier)
 		}
 		else if (choix == 2)
 		{
-			/*Charger(fichier); // Attention a l'ordre !!!
-			 Sauvegarder(fichier);*/
 			// Pour mettre a jour le fichier, il faut utiliser ios::app dans la definition du flux :
 			// On va se placer a la fin du fichier afin de le modifier
 			return false;
@@ -588,11 +607,15 @@ bool Catalogue::VerifierExistenceFichier(string &fichier)
 		else if (choix == 3)
 		{
 			string newName;
-			cout << "Veuillez choisir un nouveau nom " << endl;
+			cout << "Veuillez choisir un nouveau nom : " << flush;
 			cin >> newName;
+			is.close();
 			VerifierExistenceFichier(newName);
+			fichier = newName;
 		}
+		is.close();
 	}
+	cout << "Fin verification nom fichier" << endl;
 	return true;
 } // Fin de VerifierExistenceFichier(string &fichier)
 

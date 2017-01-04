@@ -28,7 +28,7 @@
 
 /* Begin PBXFileReference section */
 		AFE3EE631DF7552E001A475E /* TP2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TP2; sourceTree = BUILT_PRODUCTS_DIR; };
-		AFE3EE661DF7552E001A475E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		AFE3EE661DF7552E001A475E /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		AFE3EE6D1DF75588001A475E /* TrajetSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrajetSimple.h; sourceTree = "<group>"; };
 		AFE3EE6E1DF75588001A475E /* TrajetSimple.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrajetSimple.cpp; sourceTree = "<group>"; };
 		AFE3EE6F1DF75588001A475E /* TrajetCompose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrajetCompose.h; sourceTree = "<group>"; };

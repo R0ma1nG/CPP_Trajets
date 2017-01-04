@@ -5,15 +5,14 @@
  copyright            : (C) 2016 par rgouttefangeas
  *************************************************************************/
 
-//---------- Réalisation de la classe <Main> (fichier Main.cpp) --
+//---------- R√©alisation de la classe <Main> (fichier Main.cpp) --
 
 //---------------------------------------------------------------- INCLUDE
 
-//-------------------------------------------------------- Include système
-using namespace std;
+//-------------------------------------------------------- Include syst√®me
 #include <iostream>
 #include <cstring>
-
+using namespace std;
 //------------------------------------------------------ Include personnel
 #include "Trajet.h"
 #include "TrajetSimple.h"
@@ -24,7 +23,7 @@ using namespace std;
 const int TAILLE = 100;
 //---------------------------------------------------- Variables de classe
 
-//----------------------------------------------------------- Types privés
+//----------------------------------------------------------- Types priv√©s
 
 
 //----------------------------------------------------------------- PUBLIC
@@ -60,18 +59,23 @@ int main(int argv, char** argc)
 		}
 
 
-		char depart[TAILLE];
-		char arrivee[TAILLE];
-		char transport[TAILLE];
+		string depart;
+		string arrivee;
+		string transport;
 		if(choix == 1)
 		{
-			cout << "Inserez le trajet sous la forme '<Ville de Depart> <Ville d'Arrivee> <Moyen de Transport>" << endl;
-			cin >> depart;
-			cin >> arrivee;
-			cin >> transport;
-			TrajetSimple *trajet = new TrajetSimple(depart, arrivee, transport);
+			cout << "Inserez le trajet : "<< endl <<"<Ville de Depart> : "<<flush;
+			cin >> ws;
+			getline(cin, depart);
+			cout << "<Ville d'Arrivee> : "<< flush;
+			cin >> ws;
+			getline(cin, arrivee);
+			cout << "<Moyen de Transport> : "<< flush;
+			cin >> ws;
+			getline(cin, transport);
+			TrajetSimple *trajet = new TrajetSimple(depart.c_str(), arrivee.c_str(), transport.c_str());
 			catalogue.Ajouter(trajet);
-			cout << "Trajet ajouté!" << endl;
+			cout << "Trajet ajoute!" << endl;
 		}
 		else if(choix==2)
 		{
@@ -84,25 +88,31 @@ int main(int argv, char** argc)
 			TrajetCompose *newTrajetC = new TrajetCompose();
 			for(int i = 0 ; i<etapes ;i++)
 			{
-				cin >> depart;
-				cin >> arrivee;
-				cin >> transport;
+				cout << "Etape n° "<<i<<" : "<< endl <<"<Ville de Depart> : "<<flush;
+				cin >> ws;
+				getline(cin, depart);
+				cout << "<Ville d'Arrivee> : "<<flush;
+				cin >> ws;
+				getline(cin, arrivee);
+				cout << "<Moyen de Transport> : "<<flush;
+				cin >> ws;
+				getline(cin, transport);
 
-				if(strcmp(depart, arrivee)==0)
+				if(strcmp(depart.c_str(), arrivee.c_str())==0)
 				{
 					cout << "Depart et arrivee sont les memes, essayez encore" << endl;
 					i--;
 					continue;
 				}
-				if(i!=0 && strcmp(lastArrivee, depart)!=0)
+				if(i!=0 && strcmp(lastArrivee, depart.c_str())!=0)
 				{
 					cout << "La ville de depart ne correspond pas a la ville d'arrivee de l'etape precedente" << endl;
 					i--;
 					continue;
 				}
-				TrajetSimple *ts = new TrajetSimple(depart, arrivee, transport);
+				TrajetSimple *ts = new TrajetSimple(depart.c_str(), arrivee.c_str(), transport.c_str());
 				newTrajetC->AjouterTrajet(ts);
-				strcpy(lastArrivee, arrivee);
+				strcpy(lastArrivee, arrivee.c_str());
 			}
 			catalogue.Ajouter(newTrajetC);
 			cout << "Votre trajet compose a ete ajoute" << endl;
@@ -115,12 +125,15 @@ int main(int argv, char** argc)
 		}
 		else if(choix == 4)
 		{
-			cout << "Recherche de trajet : " << endl << "Saisissez votre recherche sous la forme : "<<endl<<"<Ville de Depart> <Ville d'Arrivee>" <<endl;
-			char dep[TAILLE];
-			char arr[TAILLE];
-			cin >> dep;
-			cin >> arr;
-			catalogue.RechercheComplexe(dep, arr);
+			string dep;
+			string arr;
+			cout << "Recherche de trajet : " << endl << "Saisissez votre recherche : "<<endl<<"<Ville de Depart> : "<< flush;
+			cin >> ws;
+			getline(cin, dep);
+			cout <<"<Ville d'Arrivee> :"<< flush;
+			cin >> ws;
+			getline(cin, arr);
+			catalogue.RechercheComplexe(dep.c_str(), arr.c_str());
 		}
 		else if (choix == 5)
 		{
@@ -155,7 +168,8 @@ int main(int argv, char** argc)
 					// Trajet avec selection depart
 					string nomDepart;
 					cout << "Veuillez entrer votre ville de depart" << endl;
-					cin >> nomDepart;
+					cin >> ws;
+					getline(cin, nomDepart);
 					catalogue.Sauvegarder(nomFichier, nomDepart, true);
 					break;
 				}
@@ -165,7 +179,8 @@ int main(int argv, char** argc)
 					// Trajets avec selection arrivee
 					string nomArrivee;
 					cout << "Veuillez entrer votre ville d'arrivee" << endl;
-					cin >> nomArrivee;
+					cin>>ws;
+					getline(cin, nomArrivee);
 					catalogue.Sauvegarder(nomFichier, nomArrivee, false);
 					break;
 				}
@@ -176,9 +191,11 @@ int main(int argv, char** argc)
 					string arrivee;
 					string depart;
 					cout << "Veuillez entrer votre ville de depart" << endl;
-					cin >> depart;
+					cin>>ws;
+					getline(cin, depart);
 					cout << "Veuillez entrer votre ville d'arrivee" << endl;
-					cin >> arrivee;
+					cin>>ws;
+					getline(cin, arrivee);
 					catalogue.Sauvegarder(nomFichier, depart, arrivee);
 					break;
 				}
@@ -192,13 +209,7 @@ int main(int argv, char** argc)
 					cin >> borneInf;
 					cout << "Veuillez entrer la borne maximale de la selection" << endl;
 					cin >> borneMax;
-					if (borneInf <= borneMax)
-					{
-						catalogue.Sauvegarder(nomFichier, borneInf, borneMax);
-					}
-					else {
-						cout << "La borne minimale doit etre plus petite ou egale a la borne maximale " << endl;
-					}
+					catalogue.Sauvegarder(nomFichier, borneInf, borneMax);
 					break;
 				}
 				default :
@@ -217,8 +228,15 @@ int main(int argv, char** argc)
 			cout << "Veuillez choisir le nom du fichier a charger" << endl;
 			cin >> nomFichier;
 			// VERIFICATION DE L'EXTENSION DU FICHIER
-			string extensionFichier = nomFichier.substr(nomFichier.size()-4, nomFichier.size());
-			if(extensionFichier.compare(".txt")!=0)
+			if(nomFichier.size() >=4)
+			{
+				string extensionFichier = nomFichier.substr(nomFichier.size()-4, nomFichier.size());
+				if(extensionFichier.compare(".txt")!=0)
+				{
+					nomFichier.append(".txt");
+				}
+			}
+			else
 			{
 				nomFichier.append(".txt");
 			}
@@ -242,10 +260,11 @@ int main(int argv, char** argc)
 					
 				case 4 :
 				{
-					// Trajet avec selection d�part
+					// Trajet avec selection dÈpart
 					string nomDepart;
 					cout << "Veuillez entrer votre ville de depart" << endl;
-					cin >> nomDepart;
+					cin >> ws;
+					getline(cin, nomDepart);
 					catalogue.Charger(nomFichier, nomDepart, true);
 					break;
 				}
@@ -255,7 +274,8 @@ int main(int argv, char** argc)
 					// Trajets avec selection arrivee
 					string nomArrivee;
 					cout << "Veuillez entrer votre ville d'arrivee" << endl;
-					cin >> nomArrivee;
+					cin >> ws;
+					getline(cin, nomArrivee);
 					catalogue.Charger(nomFichier, nomArrivee, false);
 					break;
 				}
@@ -266,9 +286,11 @@ int main(int argv, char** argc)
 					string nomArrivee;
 					string nomDepart;
 					cout << "Veuillez entrer votre ville de depart" << endl;
-					cin >> nomDepart;
+					cin >> ws;
+					getline(cin, nomDepart);
 					cout << "Veuillez entrer votre ville d'arrivee" << endl;
-					cin >> nomArrivee;
+					cin >> ws;
+					getline(cin, nomArrivee);
 					catalogue.Charger(nomFichier, nomDepart, nomArrivee);
 					break;
 				}
@@ -282,7 +304,7 @@ int main(int argv, char** argc)
 					cin >> borneInf;
 					cout << "Veuillez entrer la borne maximale de la selection" << endl;
 					cin >> borneMax;
-					if (borneInf <= borneMax) // Il y a d'autres test � v�rifier
+					if (borneInf <= borneMax) // Il y a d'autres test ‡ vÈrifier
 					{
 						catalogue.Charger(nomFichier, borneInf, borneMax);
 					}
@@ -312,11 +334,11 @@ int main(int argv, char** argc)
 }
 //-------------------------------------------------------- Fonctions amies
 
-//----------------------------------------------------- Méthodes publiques
+//----------------------------------------------------- M√©thodes publiques
 
 //------------------------------------------------------------------ PRIVE
 
-//----------------------------------------------------- Méthodes protégées
+//----------------------------------------------------- M√©thodes prot√©g√©es
 
-//------------------------------------------------------- Méthodes privées
+//------------------------------------------------------- M√©thodes priv√©es
 
